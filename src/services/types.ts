@@ -31,4 +31,11 @@ export type TPhoto = {
   title: string;
   src: string;
   id?: string;
-}
+};
+
+export type TSocial = {
+  name: string;
+  url: string;
+  id?: string;
+  image: string;
+};

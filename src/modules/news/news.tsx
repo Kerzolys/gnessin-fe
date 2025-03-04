@@ -12,21 +12,27 @@ export const News = () => {
   const [selectedNews, setSelectedNews] = useState<TNews | null>(null);
 
   const handleOpen = (news: TNews) => {
-    setSelectedNews(news)
+    setSelectedNews(news);
     setIsOpen(true);
   };
+
   return (
     <div className={styles.container}>
       <h2 className={styles.container__heading}>Последние события</h2>
       <div className={styles.container__news}>
         {testNews.map((news) => {
-           
-          return <NewsItem key={news.id} data={news} onClick={() => handleOpen(news)} />;
+          return (
+            <NewsItem
+              key={news.id}
+              data={news}
+              onClick={() => handleOpen(news)}
+            />
+          );
         })}
       </div>
       {isOpen && selectedNews && (
         <Modal onClose={() => setIsOpen(false)}>
-          <ModalNews data={selectedNews}  />
+          <ModalNews data={selectedNews} />
         </Modal>
       )}
     </div>

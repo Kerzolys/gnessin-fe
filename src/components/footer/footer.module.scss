@@ -1,0 +1,9 @@
+.footer {
+    padding-block: 60px;
+    &__social {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        margin-block-end: 60px;
+    }
+}

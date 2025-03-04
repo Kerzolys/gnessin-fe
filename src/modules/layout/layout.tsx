@@ -1,3 +1,4 @@
+import { Footer } from "../../components/footer/footer";
 import { Header } from "../../components/header/header";
 
 type LayoutProps = {
@@ -9,7 +10,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     <>
       <Header />
       {children}
-      <footer></footer>
+      <Footer />
     </>
   );
 };
