@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  cursor: pointer;
+
+  &__news {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #000;
+    border-radius: 10px;
+    align-items: start;
+    max-inline-size: 620px;
+    padding-block: 25px;
+    padding-inline: 15px;
+    &:hover {
+      background-color: #f1f1f1;
+    }
+    & p {
+      margin: 0;
+      text-align: left;
+    }
+  }
+  @media screen and (max-width: 1140px) {
+    &__button{
+      display: none;
+    }
+  }
+}

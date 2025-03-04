@@ -1,0 +1,28 @@
+.container {
+  max-block-size: 800px;
+  padding-block: 75px;
+  background-image: url("/assets/bc.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &__heading {
+    max-inline-size: 550px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 70px;
+    font-weight: bold;
+    line-height: 1.2;
+    color: #ebe5e5;
+  }
+  & span {
+    font-size: 70px;
+    color: #fff;
+    text-align: center;
+    color: #ebe5e5;
+    font-family: "Times New Roman", "Lucida Grande", "Lucida Sans Unicode", serif;
+  }
+}

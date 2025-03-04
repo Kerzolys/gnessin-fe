@@ -1,0 +1,91 @@
+.slider {
+  position: relative;
+  inline-size: 100%;
+  block-size: 469px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  &__container {
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s ease;
+    inline-size: 750px; /* Подгони под нужный размер */
+    block-size: 100%;
+    &_active {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  @media screen and (max-width: 1140px) {
+    // inline-size: 80%;
+    block-size: 400px;
+    &__container {
+      inline-size: 600px;
+    }
+  }
+  // @media screen and (max-width: 768px) {
+  //   // inline-size: 60%;
+  //   block-size: 300px;
+  //   &__container {
+  //     inline-size: 400px;
+  //   }
+  // }
+}
+
+.nextButton,
+.prevButton {
+  z-index: 20;
+  position: relative;
+  border-radius: 50% !important;
+  inline-size: 50px;
+  aspect-ratio: 1/1;
+}
+
+.nextButton::before,
+.prevButton::before {
+  position: absolute;
+  content: "";
+  width: 10px;
+  height: 10px;
+  top: 19px;
+  transform: translateY(-50%);
+  border-block-end: 1px solid #000;
+  border-inline-start: 1px solid #000;
+  cursor: pointer;
+}
+
+.prevButton {
+  position: absolute;
+  left: 110px;
+  @media screen and (max-width: 1140px) {
+    left: 40px;
+  }
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+}
+
+.prevButton::before {
+  transform: rotate(45deg);
+  left: 20px;
+}
+
+.nextButton {
+  position: absolute;
+  right: 110px;
+  @media screen and (max-width: 1140px) {
+    right: 40px;
+  }
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+}
+
+.nextButton::before {
+  transform: rotate(-135deg);
+  right: 20px;
+}
