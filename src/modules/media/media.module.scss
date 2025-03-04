@@ -5,6 +5,9 @@
     align-items: center;
     padding-block: 134px;
     padding-inline: 150px;
+    @media screen and (max-width: 1140px){
+        padding-inline: 80px;
+    }
     @media screen and (max-width: 767px) {
         padding-inline: 20px;
     }

@@ -24,7 +24,9 @@
     // inline-size: 80%;
     block-size: 400px;
     &__container {
-      inline-size: 600px;
+      // inline-size: 600px;
+      inline-size: 90%;
+
     }
   }
   // @media screen and (max-width: 768px) {
@@ -60,10 +62,7 @@
 
 .prevButton {
   position: absolute;
-  left: 110px;
-  @media screen and (max-width: 1140px) {
-    left: 40px;
-  }
+  left: 0px;
   @media screen and (max-width: 768px) {
     display: none;
   }
@@ -76,10 +75,7 @@
 
 .nextButton {
   position: absolute;
-  right: 110px;
-  @media screen and (max-width: 1140px) {
-    right: 40px;
-  }
+  right: 0;
   @media screen and (max-width: 768px) {
     display: none;
   }
