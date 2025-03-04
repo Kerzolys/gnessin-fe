@@ -25,4 +25,11 @@
     color: #ebe5e5;
     font-family: "Times New Roman", "Lucida Grande", "Lucida Sans Unicode", serif;
   }
+
+  @media screen and (max-width: 767px) {
+    &__heading,
+    &span {
+      font-size: 50px;
+    }
+  }
 }

@@ -15,11 +15,19 @@ export const Slider: React.FC<SliderProps> = ({ slides }) => {
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [touchEndX, setTouchEndX] = useState<number | null>(null);
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStartX(e.touches[0].clientX);
+  const handleTouchStart = (evt: React.TouchEvent) => {
+    evt.preventDefault();
+    setTouchStartX(evt.touches[0].clientX);
+    console.log(evt.touches[0].clientX)
+    console.log(touchStartX)
+
+
   };
 
+  console.log(touchStartX)
+
   const handleTouchMove = (evt: React.TouchEvent<HTMLDivElement>) => {
+    // evt.preventDefault();
     setTouchEndX(evt.touches[0].clientX);
   };
 
@@ -67,6 +75,9 @@ export const Slider: React.FC<SliderProps> = ({ slides }) => {
       />
       {slides.map((slide, index) => (
         <div
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
           className={classNames(styles.slider__container, {
             [styles.slider__container_active]: slideIndex === index,
           })}
