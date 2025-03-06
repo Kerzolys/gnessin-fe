@@ -1,6 +1,6 @@
 import styles from "./button.module.scss";
 
-export type ButonProps = {
+export type ButtonProps = {
   buttonText: string;
   type: "button" | "submit" | "reset" | undefined;
   disabled?: boolean;
@@ -9,7 +9,7 @@ export type ButonProps = {
   children?: React.ReactNode
 };
 
-export const Button: React.FC<ButonProps> = ({
+export const Button: React.FC<ButtonProps> = ({
   buttonText,
   type = "button",
   disabled,

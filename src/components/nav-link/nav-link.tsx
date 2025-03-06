@@ -5,13 +5,17 @@ import styles from "./nav-link.module.scss";
 type NavLinkProps = {
   to: string;
   title: string;
+  extraClassname?: string;
 };
 
-export const NavLink: React.FC<NavLinkProps> = ({ to, title }) => {
+export const NavLink: React.FC<NavLinkProps> = ({
+  to,
+  title,
+  extraClassname,
+}) => {
   return (
-    <Link to={to} className={styles.navLink}>
+    <Link to={to} className={`${styles.navLink} ${extraClassname}`}>
       {title}
     </Link>
   );
 };
-

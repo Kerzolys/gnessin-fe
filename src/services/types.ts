@@ -39,3 +39,12 @@ export type TSocial = {
   id?: string;
   image: string;
 };
+
+export type TUser = {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  refreshToken: string;
+  token: string;
+};
