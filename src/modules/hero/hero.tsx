@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import { fetchHeroEvent } from "./api/apiHero";
-import { THeroEvent } from "../../services/types";
+import { useEffect } from "react";
 
 import styles from "./hero.module.scss";
 import { Preloader } from "../../components/preloader/preloader";

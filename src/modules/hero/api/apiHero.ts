@@ -1,13 +1,13 @@
-import { getDoc, doc, updateDoc, getDocs, collection } from "firebase/firestore";
+import { doc, updateDoc, getDocs, collection } from "firebase/firestore";
 import { db } from "../../../services/firebase/firebase";
 import { THeroEvent } from "../../../services/types";
 
 export const fetchHeroEvent = async (): Promise<THeroEvent | null> => {
-  const querySnapshot = await getDocs(collection(db, "heroEvent"))
-  const heroEvent = querySnapshot.docs.map(doc => ({
+  const querySnapshot = await getDocs(collection(db, "heroEvent"));
+  const heroEvent = querySnapshot.docs.map((doc) => ({
     id: doc.id,
-   ...doc.data() as THeroEvent, 
-  }))[0]
+    ...(doc.data() as THeroEvent),
+  }))[0];
 
   return heroEvent;
 };
