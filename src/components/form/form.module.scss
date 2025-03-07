@@ -5,7 +5,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    inline-size: 500px;
+    max-inline-size: 500px;
+    inline-size: 90%;
     padding-block: 20px;
     padding-inline: 15px;
     gap: 20px;

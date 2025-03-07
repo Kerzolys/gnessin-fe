@@ -4,6 +4,7 @@ import { Admin } from "./modules/admin/admin";
 
 import "./App.css";
 import { MainEvent } from "./modules/admin/mainEvent/mainEvent";
+import { Videos } from "./modules/admin/videos/videos";
 
 function App() {
   return (
@@ -12,6 +13,8 @@ function App() {
         <Route path="/" element={<Home />}></Route>
         <Route path="/admin" element={<Admin />}></Route>
         <Route path="/admin/hero" element={<MainEvent />}></Route>
+        <Route path="/admin/videos" element={<Videos />}></Route>
+
       </Routes>
     </>
   );

@@ -3,46 +3,44 @@ import { ButtonProps } from "../../../../../components/button/button";
 import { Form } from "../../../../../components/form/form";
 import { InputProps } from "../../../../../components/input/input";
 import { Preloader } from "../../../../../components/preloader/preloader";
-import { THeroEvent } from "../../../../../services/types";
-import { useHeroEvent } from "../../../../../services/zustand/store";
+import { TVideo } from "../../../../../services/types";
+import { useVideosState } from "../../../../../services/zustand/store";
 
-export const FormEditEvent = ({
+export const FormEditVideo = ({
   data,
   onCancel,
 }: {
-  data: THeroEvent;
+  data: TVideo;
   onCancel: () => void;
 }) => {
-  const [values, setValues] = useState<THeroEvent>({
+  const { isLoading, editVideo } = useVideosState();
+  const [values, setValues] = useState<TVideo>({
+    id: data.id,
     title: data.title,
-    date: data.date,
+    videoSrc: data.videoSrc,
   });
-  const { isLoading, editHeroEvent } = useHeroEvent();
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await editHeroEvent({ ...values, id: data.id });
+    await editVideo(values);
     onCancel();
   };
-
   const inputs: InputProps[] = [
     {
       name: "title",
       type: "text",
-      placeholder: "Title",
+      placeholder: "Video title",
       onChange: handleChange,
       value: values.title,
     },
     {
-      name: "date",
+      name: "videoSrc",
       type: "text",
-      placeholder: "data",
+      placeholder: "Video source URL",
       onChange: handleChange,
-      value: values.date,
+      value: values.videoSrc,
     },
   ];
 
@@ -59,6 +57,12 @@ export const FormEditEvent = ({
   ];
 
   if (isLoading) return <Preloader />;
-
-  return <Form inputs={inputs} buttons={buttons} onSubmit={handleSubmit} formName="Edit event" />;
+  return (
+    <Form
+      inputs={inputs}
+      buttons={buttons}
+      onSubmit={handleSubmit}
+      formName="Edit video"
+    />
+  );
 };

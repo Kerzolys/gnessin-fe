@@ -8,6 +8,7 @@ type FormProps = {
   buttons: ButtonProps[];
   onSubmit: (data: React.FormEvent) => void;
   extraClassname?: string;
+  formName: string;
 };
 
 export const Form: React.FC<FormProps> = ({
@@ -15,12 +16,14 @@ export const Form: React.FC<FormProps> = ({
   buttons,
   onSubmit,
   extraClassname,
+  formName
 }) => {
   return (
     <form
       className={`${styles.form} ${extraClassname || ""}`}
       onSubmit={onSubmit}
     >
+      <h2>{formName}</h2>
       {inputs.map((input) => (
         <Input key={input.name} {...input} />
       ))}

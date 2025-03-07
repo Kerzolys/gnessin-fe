@@ -1,0 +1,32 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    &__videos {
+        display: flex;
+        // flex-direction: column;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: space-around;
+        align-items: center;
+        max-inline-size: 700px;
+        inline-size: 90%;
+        &__video {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+            // max-width: 300px;
+            // max-height: 200px;
+            border-radius: 10px;
+            // overflow: hidden;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+            &:hover {
+                transform: scale(1.05);
+            }
+        }
+    }
+}

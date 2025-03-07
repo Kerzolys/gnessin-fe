@@ -1,9 +1,15 @@
 import { create } from "zustand";
-import { THeroEvent, TUser } from "../types";
+import { THeroEvent, TUser, TVideo } from "../types";
 import { loginUser, logoutUser } from "../api/api";
 
 import { auth } from "../firebase/firebase";
 import { editHeroEvent, fetchHeroEvent } from "../../modules/hero/api/apiHero";
+import {
+  addVideo,
+  deleteVideo,
+  editVideo,
+  fetchVideos,
+} from "../../modules/media/components/api/apiMedia";
 
 type AuthState = {
   user: TUser | null;
@@ -118,6 +124,71 @@ export const useHeroEvent = create<HeroEventState>((set) => ({
     try {
       await editHeroEvent(heroEvent.id!, heroEvent);
       set({ heroEvent, isLoading: false });
+    } catch (error: any) {
+      set({ error: error.message, isLoading: false });
+    }
+  },
+}));
+
+type VideosState = {
+  videos: TVideo[] | [];
+  isLoading: boolean;
+  error: string | null;
+  loadVideos: () => void;
+  editVideo: (video: TVideo) => void;
+  addVideo: (video: TVideo) => void;
+  deleteVideo: (videoId: string) => void;
+};
+
+export const useVideosState = create<VideosState>((set) => ({
+  videos: [],
+  isLoading: false,
+  error: null,
+  loadVideos: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const videos = await fetchVideos();
+      if (videos) {
+        set({ videos, isLoading: false });
+      } else {
+        set({ error: "Error fetching videos", isLoading: false });
+      }
+    } catch (error: any) {
+      set({ isLoading: false, error: error.message });
+    }
+  },
+  editVideo: async (video) => {
+    set({ isLoading: true, error: null });
+    try {
+      await editVideo(video);
+      set((state) => ({
+        videos: state.videos.map((v) => (v.id === video.id ? video : v)),
+        isLoading: false,
+      }));
+    } catch (error: any) {
+      set({ error: error.message, isLoading: false });
+    }
+  },
+  addVideo: async (video) => {
+    set({ isLoading: true, error: null });
+    try {
+      const newVideoId = await addVideo(video);
+      set((state) => ({
+        videos: [...state.videos, { ...video, id: newVideoId }],
+        isLoading: false,
+      }));
+    } catch (error: any) {
+      set({ error: error.message, isLoading: false });
+    }
+  },
+  deleteVideo: async (videoId) => {
+    set({ isLoading: true, error: null });
+    try {
+      await deleteVideo(videoId);
+      set((state) => ({
+        videos: state.videos.filter((v) => v.id !== videoId),
+        isLoading: false,
+      }));
     } catch (error: any) {
       set({ error: error.message, isLoading: false });
     }

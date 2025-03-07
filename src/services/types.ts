@@ -13,7 +13,7 @@ export type TFestival = {
 export type TVideo = {
   title: string;
   videoSrc: string;
-  id: string;
+  id?: string;
 };
 
 // export type TAbout = {};
