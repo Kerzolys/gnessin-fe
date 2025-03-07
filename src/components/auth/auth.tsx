@@ -54,5 +54,5 @@ export const Auth: React.FC<AuthProps> = ({ isRegister }) => {
     },
   ];
 
-  return <Form inputs={inputs} buttons={buttons} onSubmit={handleSubmit} />;
+  return <Form inputs={inputs} buttons={buttons} onSubmit={handleSubmit} formName={isRegister ? 'Sign up' : 'Sign in'} />;
 };
