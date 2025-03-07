@@ -1,12 +1,17 @@
+import { useEffect, useState } from "react";
+import { fetchHeroEvent } from "./api/apiHero";
 import { THeroEvent } from "../../services/types";
 
 import styles from "./hero.module.scss";
+import { Preloader } from "../../components/preloader/preloader";
+import { useHeroEvent } from "../../services/zustand/store";
 
-type HeroProps = {
-  heroEvent: THeroEvent;
-};
-
-export const Hero: React.FC<HeroProps> = ({ heroEvent }) => {
+export const Hero = () => {
+  const { heroEvent, loadHeroEvent } = useHeroEvent();
+  useEffect(() => {
+    loadHeroEvent();
+  }, []);
+  if (!heroEvent) return <Preloader />;
   return (
     <div className={styles.container}>
       <h1 className={styles.container__heading}>{heroEvent.title}</h1>

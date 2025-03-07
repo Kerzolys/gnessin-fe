@@ -1,8 +1,9 @@
 import { create } from "zustand";
-import { TUser } from "../types";
+import { THeroEvent, TUser } from "../types";
 import { loginUser, logoutUser } from "../api/api";
 
 import { auth } from "../firebase/firebase";
+import { editHeroEvent, fetchHeroEvent } from "../../modules/hero/api/apiHero";
 
 type AuthState = {
   user: TUser | null;
@@ -76,5 +77,49 @@ export const useAuth = create<AuthState>((set) => ({
         set({ user: null, isAuthenticated: false, isLoading: false });
       }
     });
+  },
+}));
+
+type HeroEventState = {
+  heroEvent: THeroEvent | null;
+  isLoading: boolean;
+  error: string | null;
+  setHeroEvent: (heroEvent: THeroEvent) => void;
+  setError: (error: string | null) => void;
+  loadHeroEvent: () => void;
+  editHeroEvent: (heroEvent: THeroEvent) => void;
+};
+
+export const useHeroEvent = create<HeroEventState>((set) => ({
+  heroEvent: null,
+  isLoading: false,
+  error: null,
+  setHeroEvent: (heroEvent) => set({ heroEvent }),
+  setError: (error) => set({ error }),
+  loadHeroEvent: async () => {
+    // set({ isLoading: true, error: null });
+    set((state) => ({
+      isLoading: !state.heroEvent, // Загружаем только если данных нет
+      error: null,
+    }));
+    try {
+      const heroEvent = await fetchHeroEvent();
+      if (heroEvent) {
+        set({ heroEvent, isLoading: false });
+      } else {
+        set({ error: "Error fetching hero event", isLoading: false });
+      }
+    } catch (error: any) {
+      set({ error: error.message, isLoading: false });
+    }
+  },
+  editHeroEvent: async (heroEvent) => {
+    set({ heroEvent });
+    try {
+      await editHeroEvent(heroEvent.id!, heroEvent);
+      set({ heroEvent, isLoading: false });
+    } catch (error: any) {
+      set({ error: error.message, isLoading: false });
+    }
   },
 }));

@@ -8,7 +8,7 @@ import './services/firebase/firebase.ts'
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/">
       <App />
     </BrowserRouter>
   </StrictMode>
