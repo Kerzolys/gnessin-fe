@@ -6,8 +6,8 @@ import {
   getDocs,
   updateDoc,
 } from "firebase/firestore";
-import { TVideo } from "../../../../services/types";
-import { db } from "../../../../services/firebase/firebase";
+import { TVideo } from "../../../services/types";
+import { db } from "../../../services/firebase/firebase";
 
 export const fetchVideos = async (): Promise<TVideo[] | null> => {
   const videosCollection = collection(db, "videos");

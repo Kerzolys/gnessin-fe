@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { THeroEvent, TUser, TVideo } from "../types";
+import { THeroEvent, TSocial, TUser, TVideo } from "../types";
 import { loginUser, logoutUser } from "../api/api";
 
 import { auth } from "../firebase/firebase";
@@ -9,7 +9,13 @@ import {
   deleteVideo,
   editVideo,
   fetchVideos,
-} from "../../modules/media/components/api/apiMedia";
+} from "../../modules/media/api/apiMedia";
+import {
+  addSocial,
+  deleteSocial,
+  editSocial,
+  fetchSocial,
+} from "../../modules/admin/social/api/apiSocial";
 
 type AuthState = {
   user: TUser | null;
@@ -191,6 +197,75 @@ export const useVideosState = create<VideosState>((set) => ({
       }));
     } catch (error: any) {
       set({ error: error.message, isLoading: false });
+    }
+  },
+}));
+
+type SocialState = {
+  social: TSocial[] | [];
+  isLoading: boolean;
+  error: string | null;
+  loadSocial: () => void;
+  editSocial: (social: TSocial) => void;
+  addSocial: (social: TSocial) => void;
+  deleteSocial: (socialId: string) => void;
+};
+
+export const useSocialState = create<SocialState>((set) => ({
+  social: [],
+  isLoading: false,
+  error: null,
+  loadSocial: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const social = await fetchSocial();
+      if (social) {
+        set({ social, isLoading: false });
+      } else {
+        set({ error: "Error fetching social media", isLoading: false });
+      }
+    } catch (err: any) {
+      set({ isLoading: false, error: err.message });
+    }
+  },
+  editSocial: async (social: TSocial, file?: File) => {
+    set({ isLoading: true, error: null });
+    try {
+      await editSocial(social, file);
+      set((state) => ({
+        social: state.social?.map((s) =>
+          s.id === social.id ? { ...s, ...social } : s
+        ),
+        isLoading: false,
+      }));
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
+    }
+  },
+  addSocial: async (social: TSocial & { file?: File }) => {
+    set({ isLoading: true, error: null });
+    try {
+      const { file, ...socialData } = social;
+      const newSocialId = await addSocial({ ...socialData, file });
+
+      set((state) => ({
+        social: [...state.social, { ...socialData, id: newSocialId }],
+        isLoading: false,
+      }));
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
+    }
+  },
+  deleteSocial: async (socialId) => {
+    set({ isLoading: true, error: null });
+    try {
+      await deleteSocial(socialId);
+      set((state) => ({
+        social: state.social?.filter((s) => s.id !== socialId),
+        isLoading: false,
+      }));
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
     }
   },
 }));

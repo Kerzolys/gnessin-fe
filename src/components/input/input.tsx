@@ -1,7 +1,7 @@
 import styles from './input.module.scss'
 
 export type InputProps = {
-  value: string;
+  value?: string;
   placeholder: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   type?: string;

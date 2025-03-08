@@ -6,9 +6,14 @@ type SocialLinkProps = {
 };
 
 export const SocialLink: React.FC<SocialLinkProps> = ({ data }) => {
-    return (
-      <a href={data.url} target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
-        <img src={data.image} alt={data.name} />
-      </a>
-    );
+  return (
+    <a
+      href={data.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={styles.socialLink}
+    >
+      <img src={data.image} alt={data.name} />
+    </a>
+  );
 };

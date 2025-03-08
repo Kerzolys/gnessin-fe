@@ -3,6 +3,7 @@ import { InputProps } from "../input/input";
 import { ButtonProps } from "../button/button";
 import { Form } from "../form/form";
 import { useAuth } from "../../services/zustand/store";
+import { registerUser } from "../../services/api/api";
 
 export type AuthProps = {
   isRegister: boolean;
@@ -25,9 +26,11 @@ export const Auth: React.FC<AuthProps> = ({ isRegister }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement authentication logic
-
-    login(values.email, values.password);
+    if (isRegister) {
+      registerUser(values.email, values.password);
+    } else {
+      login(values.email, values.password);
+    }
   };
 
   const inputs: InputProps[] = [
@@ -49,10 +52,16 @@ export const Auth: React.FC<AuthProps> = ({ isRegister }) => {
   const buttons: ButtonProps[] = [
     {
       buttonText: isRegister ? "Register" : "Login",
-      onClick: () => console.log(values),
       type: "submit",
     },
   ];
 
-  return <Form inputs={inputs} buttons={buttons} onSubmit={handleSubmit} formName={isRegister ? 'Sign up' : 'Sign in'} />;
+  return (
+    <Form
+      inputs={inputs}
+      buttons={buttons}
+      onSubmit={handleSubmit}
+      formName={isRegister ? "Sign up" : "Sign in"}
+    />
+  );
 };

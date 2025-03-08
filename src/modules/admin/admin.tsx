@@ -1,14 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Auth } from "../../components/auth/auth";
 import { NavLink } from "../../components/nav-link/nav-link";
 import { useAuth } from "../../services/zustand/store";
 import styles from "./admin.module.scss";
 import { Preloader } from "../../components/preloader/preloader";
 import { Button } from "../../components/button/button";
+import { Modal } from "../../components/modal/modal";
 
 export const Admin = () => {
   const { isAuthenticated, restoreSession, isLoading, logout } = useAuth();
-  console.log("auth", isAuthenticated);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     restoreSession();
@@ -16,7 +17,12 @@ export const Admin = () => {
 
   const handleLogOut = () => {
     logout();
-  }
+  };
+
+  const handleOpenRegister = () => {
+    setIsOpen(true);
+  };
+  const handleClose = () => setIsOpen(false);
 
   if (isLoading) {
     return (
@@ -68,8 +74,30 @@ export const Admin = () => {
           to="./social"
           title="Social media"
         />
-        <Button type="button" buttonText="Log out" onClick={handleLogOut} />
+        <NavLink
+          extraClassname={styles.container__nav__link}
+          to="/"
+          title="Home"
+        />
+        <Button
+          type="button"
+          buttonText="Register new user"
+          onClick={handleOpenRegister}
+          extraClassname={styles.container__nav__button}
+        />
+
+        <Button
+          type="button"
+          buttonText="Log out"
+          onClick={handleLogOut}
+          extraClassname={styles.container__nav__button}
+        />
       </div>
+      {isOpen && (
+        <Modal onClose={handleClose}>
+          <Auth isRegister />
+        </Modal>
+      )}
     </div>
   );
 };

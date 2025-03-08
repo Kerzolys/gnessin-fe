@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  block-size: 100vh;
+  &__socialList {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    &__social {
+      border: 1px solid #dddee1;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      gap: 15px;
+    }
+  }
+}
