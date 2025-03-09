@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  &__photosList {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-around;
+    align-items: center;
+
+    inline-size: 90%;
+    &__photo {
+      display: flex;
+      flex-direction: column;
+    //   align-items: center;
+      gap: 20px;
+      padding: 20px;
+      max-width: 200px;
+    //   block-size: 300px;
+      border: 1px solid #DDDEE1;
+      border-radius: 10px;
+    }
+  }
+}

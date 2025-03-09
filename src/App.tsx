@@ -6,6 +6,7 @@ import "./App.css";
 import { MainEvent } from "./modules/admin/mainEvent/mainEvent";
 import { Videos } from "./modules/admin/videos/videos";
 import { Social } from "./modules/admin/social/social";
+import { Photos } from "./modules/admin/photos/photos";
 
 function App() {
   return (
@@ -15,9 +16,9 @@ function App() {
         <Route path="/admin" element={<Admin />}></Route>
         <Route path="/admin/hero" element={<MainEvent />}></Route>
         <Route path="/admin/videos" element={<Videos />}></Route>
+        <Route path="/admin/photos" element={<Photos />}></Route>
         <Route path="/admin/social" element={<Social />}></Route>
-
-
+        {/* <Route path="/admin/news" element={<News />}></Route> */}
       </Routes>
     </>
   );

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { THeroEvent, TSocial, TUser, TVideo } from "../types";
+import { THeroEvent, TPhoto, TSocial, TUser, TVideo } from "../types";
 import { loginUser, logoutUser } from "../api/api";
 
 import { auth } from "../firebase/firebase";
@@ -16,6 +16,11 @@ import {
   editSocial,
   fetchSocial,
 } from "../../modules/admin/social/api/apiSocial";
+import {
+  addPhoto,
+  deletePhoto,
+  fetchPhotos,
+} from "../../modules/admin/photos/api/apiPhotos";
 
 type AuthState = {
   user: TUser | null;
@@ -262,6 +267,59 @@ export const useSocialState = create<SocialState>((set) => ({
       await deleteSocial(socialId);
       set((state) => ({
         social: state.social?.filter((s) => s.id !== socialId),
+        isLoading: false,
+      }));
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
+    }
+  },
+}));
+
+type PhotosState = {
+  photos: TPhoto[] | [];
+  isLoading: boolean;
+  error: string | null;
+  loadPhotos: () => void;
+  addPhoto: (photo: TPhoto) => Promise<void>;
+  deletePhoto: (photoId: string) => void;
+};
+
+export const usePhotosState = create<PhotosState>((set) => ({
+  photos: [],
+  isLoading: false,
+  error: null,
+  loadPhotos: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const photos = await fetchPhotos();
+      if (photos) {
+        set({ photos: photos, isLoading: false, error: null });
+      } else {
+        set({ error: "Error fetching photos", isLoading: false });
+      }
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
+    }
+  },
+  addPhoto: async (photo: TPhoto & { file?: File }) => {
+    set({ isLoading: true, error: null });
+    try {
+      const { file, ...photoData } = photo;
+      const newPhotoId = await addPhoto({ ...photoData, file });
+      set((state) => ({
+        photos: [...state.photos, { ...photoData, id: newPhotoId }],
+        isLoading: false,
+      }));
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
+    }
+  },
+  deletePhoto: async (photoId: string) => {
+    set({ isLoading: true, error: null });
+    try {
+      await deletePhoto(photoId);
+      set((state) => ({
+        photos: state.photos?.filter((photo) => photo.id !== photoId),
         isLoading: false,
       }));
     } catch (err: any) {

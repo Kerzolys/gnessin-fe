@@ -10,6 +10,14 @@
   justify-content: center;
   align-items: center;
 
+  &_loading {
+    block-size: 600px;
+    background-image: url("/assets/bc.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
   &__heading {
     max-inline-size: 550px;
     font-family: Arial, Helvetica, sans-serif;
@@ -17,13 +25,19 @@
     font-weight: bold;
     line-height: 1.2;
     color: #ebe5e5;
+    opacity: 0;
+    animation: appearing 1s forwards;
   }
   & span {
     font-size: 70px;
     color: #fff;
     text-align: center;
     color: #ebe5e5;
-    font-family: "Times New Roman", "Lucida Grande", "Lucida Sans Unicode", serif;
+    font-family: "Times New Roman", "Lucida Grande", "Lucida Sans Unicode",
+      serif;
+    animation: appearing 1s forwards;
+    opacity: 0;
+    animation-delay: 1s;
   }
 
   @media screen and (max-width: 767px) {
@@ -31,5 +45,16 @@
     &span {
       font-size: 50px;
     }
+  }
+}
+
+@keyframes appearing {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
