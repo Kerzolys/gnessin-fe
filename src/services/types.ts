@@ -24,7 +24,7 @@ export type TNews = {
   description: string;
   id?: string;
   title: string;
-  photos?: TPhoto[];
+  photos: TPhoto[];
 };
 
 export type TPhoto = {

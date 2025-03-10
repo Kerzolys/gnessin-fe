@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { THeroEvent, TPhoto, TSocial, TUser, TVideo } from "../types";
+import { THeroEvent, TNews, TPhoto, TSocial, TUser, TVideo } from "../types";
 import { loginUser, logoutUser } from "../api/api";
 
 import { auth } from "../firebase/firebase";
@@ -21,6 +21,12 @@ import {
   deletePhoto,
   fetchPhotos,
 } from "../../modules/admin/photos/api/apiPhotos";
+import {
+  addNews,
+  deleteNews,
+  editNews,
+  fetchNews,
+} from "../../modules/admin/news/api/apiNews";
 
 type AuthState = {
   user: TUser | null;
@@ -320,6 +326,72 @@ export const usePhotosState = create<PhotosState>((set) => ({
       await deletePhoto(photoId);
       set((state) => ({
         photos: state.photos?.filter((photo) => photo.id !== photoId),
+        isLoading: false,
+      }));
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
+    }
+  },
+}));
+
+type NewsState = {
+  news: TNews[] | [];
+  isLoading: boolean;
+  error: string | null;
+  loadNews: () => void;
+  addNews: (news: TNews, file?: File) => void;
+  deleteNews: (newsId: string) => void;
+  editNews: (news: TNews) => void;
+};
+
+export const useNewsState = create<NewsState>((set) => ({
+  news: [],
+  isLoading: false,
+  error: null,
+  loadNews: async () => {
+    set({ isLoading: true, error: null });
+    const news = await fetchNews();
+    if (news) {
+      set({ news: news, isLoading: false });
+    } else {
+      set({ error: "Error fetching news", isLoading: false });
+    }
+  },
+  addNews: async (news: TNews, file?: File) => {
+    set({ isLoading: true, error: null });
+    console.log(file)
+    try {
+      const newNewsId = await addNews(news, file);
+      if (newNewsId) {
+        set((state) => ({
+          news: [...state.news, { ...news, id: newNewsId, }],
+          isLoading: false,
+        }));
+      }
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
+    }
+  },
+  editNews: async (news: TNews) => {
+    set({ isLoading: true, error: null });
+    try {
+      await editNews(news);
+      set((state) => ({
+        news: state.news?.map((n) =>
+          n.id === news.id ? { ...n, ...news } : n
+        ),
+        isLoading: false,
+      }));
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
+    }
+  },
+  deleteNews: async (newsId: string) => {
+    set({ isLoading: true, error: null });
+    try {
+      await deleteNews(newsId);
+      set((state) => ({
+        news: state.news?.filter((n) => n.id !== newsId),
         isLoading: false,
       }));
     } catch (err: any) {

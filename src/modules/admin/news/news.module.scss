@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 50px 100px;
+  &__newsList {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    &__news {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      border: 1px solid #dddee1;
+      padding: 20px;
+    }
+  }
+}

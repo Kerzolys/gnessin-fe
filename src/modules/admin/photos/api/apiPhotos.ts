@@ -17,6 +17,7 @@ import {
 
 export const uploadPhoto = async (file: File) => {
   const storageRef = ref(storage, `photos/${file.name}`);
+  console.log('Uploading', storageRef);
   await uploadBytes(storageRef, file);
   return await getDownloadURL(storageRef);
 };

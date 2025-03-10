@@ -11,11 +11,12 @@
     border-radius: 10px;
     align-items: start;
     max-inline-size: 620px;
+    inline-size: 100%;
     padding-block: 25px;
     padding-inline: 15px;
     opacity: 0;
     transition: all 3s ease;
-    transform: translateX(-200px);
+    transform: translateX(-100px);
     &_visible {
         opacity: 1;
         transform: translateX(0);
