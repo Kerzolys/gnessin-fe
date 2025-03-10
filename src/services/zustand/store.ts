@@ -339,7 +339,7 @@ type NewsState = {
   isLoading: boolean;
   error: string | null;
   loadNews: () => void;
-  addNews: (news: TNews, file?: File) => void;
+  addNews: (news: TNews) => void;
   deleteNews: (newsId: string) => void;
   editNews: (news: TNews) => void;
 };
@@ -361,7 +361,7 @@ export const useNewsState = create<NewsState>((set) => ({
     set({ isLoading: true, error: null });
     console.log(file)
     try {
-      const newNewsId = await addNews(news, file);
+      const newNewsId = await addNews(news);
       if (newNewsId) {
         set((state) => ({
           news: [...state.news, { ...news, id: newNewsId, }],

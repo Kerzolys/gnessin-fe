@@ -1,18 +1,16 @@
 import { NewsItem } from "./components/news-item/news-item";
-import { testNews } from "./services/testNews";
-
-import styles from "./news.module.scss";
 import { useEffect, useState } from "react";
 import { Modal } from "../../components/modal/modal";
 import { ModalNews } from "./components/modal-news/modal-news";
 import { TNews } from "../../services/types";
 import { useNewsState } from "../../services/zustand/store";
-import { Preloader } from "../../components/preloader/preloader";
+
+import styles from "./news.module.scss";
 
 export const News = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedNews, setSelectedNews] = useState<TNews | null>(null);
-  const { news, isLoading, loadNews } = useNewsState();
+  const { news, loadNews } = useNewsState();
 
   useEffect(() => {
     loadNews();
