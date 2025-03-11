@@ -125,7 +125,6 @@ export const FormAddNews = ({ onCancel }: { onCancel: () => void }) => {
             ))}
           </div>
         )}
-
       </div>
       {isOpen && photos && photos.length > 0 && (
         <Modal onClose={onCancel}>

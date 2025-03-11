@@ -10,6 +10,7 @@ import { Modal } from "../../../components/modal/modal";
 
 import styles from "./news.module.scss";
 import { FormDeleteNews } from "./components/form-delete-news";
+import { FormEditNews } from "./components/form-edit-news";
 
 export const News = () => {
   const { news, loadNews, isLoading } = useNewsState();
@@ -77,6 +78,11 @@ export const News = () => {
       {isOpen && openType === "delete" && selectedNews && (
         <Modal onClose={handleClose}>
           <FormDeleteNews data={selectedNews} onCancel={handleClose} />
+        </Modal>
+      )}
+      {isOpen && openType === "edit" && selectedNews && (
+        <Modal onClose={handleClose}>
+          <FormEditNews data={selectedNews} onCancel={handleClose} />
         </Modal>
       )}
     </div>
