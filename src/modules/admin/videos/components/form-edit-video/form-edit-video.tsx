@@ -19,7 +19,7 @@ export const FormEditVideo = ({
     title: data.title,
     videoSrc: data.videoSrc,
   });
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
   const handleSubmit = async (e: React.FormEvent) => {

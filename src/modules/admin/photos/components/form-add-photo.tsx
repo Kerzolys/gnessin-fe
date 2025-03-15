@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { TPhoto } from "../../../../services/types";
 import { usePhotosState } from "../../../../services/zustand/store";
 import { InputProps } from "../../../../components/input/input";
@@ -12,11 +12,22 @@ export const FormAddPhoto = ({ onCancel }: { onCancel: () => void }) => {
     title: "",
   });
   const [file, setFile] = useState<File | null>(null);
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) setFile(e.target.files[0]);
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  //   setValues({ ...values, [e.target.name]: e.target.value });
+  // };
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files && e.target.files.length > 0) setFile(e.target.files[0]);
+  // };
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+
+    if (e.target instanceof HTMLInputElement && e.target.files?.length) {
+      setFile(e.target.files[0]);
+    } else {
+      setValues((prev) => ({ ...prev, [name]: value }));
+    }
   };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,7 +36,7 @@ export const FormAddPhoto = ({ onCancel }: { onCancel: () => void }) => {
       return;
     }
     await addPhoto({ ...values, file } as TPhoto & { file: File });
-    
+
     onCancel();
   };
   const inputs: InputProps[] = [
@@ -40,7 +51,7 @@ export const FormAddPhoto = ({ onCancel }: { onCancel: () => void }) => {
       name: "file",
       type: "file",
       placeholder: "Select a photo",
-      onChange: handleFileChange,
+      onChange: handleChange,
     },
   ];
   const buttons: ButtonProps[] = [
@@ -55,7 +66,7 @@ export const FormAddPhoto = ({ onCancel }: { onCancel: () => void }) => {
     },
   ];
   if (isLoading) return <Preloader />;
-  
+
   return (
     <Form
       inputs={inputs}

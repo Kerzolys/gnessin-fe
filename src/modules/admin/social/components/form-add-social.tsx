@@ -14,12 +14,16 @@ export const FormAddSocial = ({ onCancel }: { onCancel: () => void }) => {
   });
   const [file, setFile] = useState<File | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) setFile(e.target.files[0]);
+    if (e.target instanceof HTMLInputElement && e.target.files?.length) {
+      setFile(e.target.files[0]);
+    } else {
+      setValues((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -51,7 +55,7 @@ export const FormAddSocial = ({ onCancel }: { onCancel: () => void }) => {
       name: "image",
       type: "file",
       placeholder: "Social network image URL",
-      onChange: handleFileChange,
+      onChange: handleChange,
     },
   ];
 

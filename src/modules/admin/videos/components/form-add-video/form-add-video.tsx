@@ -12,7 +12,7 @@ export const FormAddVideo = ({ onCancel }: { onCancel: () => void }) => {
     title: "",
     videoSrc: "",
   });
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
   const handleSubmit = async (e: React.FormEvent) => {

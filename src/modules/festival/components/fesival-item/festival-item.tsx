@@ -10,6 +10,7 @@ export const FestivalItem = ({
   data: TFestival;
   onClick?: () => void;
 }) => {
+  if (!data) return null
   return (
     <div className={styles.container}>
       <div className={styles.container__item} onClick={onClick}>
