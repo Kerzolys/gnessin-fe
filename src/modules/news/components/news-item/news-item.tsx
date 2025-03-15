@@ -13,7 +13,7 @@ export type NewsItemProps = {
 export const NewsItem: React.FC<NewsItemProps> = ({ data, onClick }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const newsRef = useRef<HTMLDivElement | null>(null);
-  console.log(data);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {

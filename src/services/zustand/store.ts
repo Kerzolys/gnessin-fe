@@ -1,5 +1,13 @@
 import { create } from "zustand";
-import { THeroEvent, TNews, TPhoto, TSocial, TUser, TVideo } from "../types";
+import {
+  TFestival,
+  THeroEvent,
+  TNews,
+  TPhoto,
+  TSocial,
+  TUser,
+  TVideo,
+} from "../types";
 import { loginUser, logoutUser } from "../api/api";
 
 import { auth } from "../firebase/firebase";
@@ -27,6 +35,12 @@ import {
   editNews,
   fetchNews,
 } from "../../modules/admin/news/api/apiNews";
+import {
+  addFestival,
+  deleteFestival,
+  editFestival,
+  fetchFestivals,
+} from "../../modules/admin/festivals/api/apiFestival";
 
 type AuthState = {
   user: TUser | null;
@@ -359,12 +373,12 @@ export const useNewsState = create<NewsState>((set) => ({
   },
   addNews: async (news: TNews, file?: File) => {
     set({ isLoading: true, error: null });
-    console.log(file)
+    console.log(file);
     try {
       const newNewsId = await addNews(news);
       if (newNewsId) {
         set((state) => ({
-          news: [...state.news, { ...news, id: newNewsId, }],
+          news: [...state.news, { ...news, id: newNewsId }],
           isLoading: false,
         }));
       }
@@ -392,6 +406,69 @@ export const useNewsState = create<NewsState>((set) => ({
       await deleteNews(newsId);
       set((state) => ({
         news: state.news?.filter((n) => n.id !== newsId),
+        isLoading: false,
+      }));
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
+    }
+  },
+}));
+
+type FestivalsState = {
+  festivals: TFestival[] | [];
+  isLoading: boolean;
+  error: string | null;
+  loadFestivals: () => void;
+  addFestival: (festival: TFestival) => void;
+  deleteFestival: (festivalId: string) => void;
+  editFestival: (festival: TFestival) => void;
+};
+
+export const useFestivalsState = create<FestivalsState>((set) => ({
+  festivals: [],
+  isLoading: false,
+  error: null,
+  loadFestivals: async () => {
+    set({ isLoading: true, error: null });
+    const festivals = await fetchFestivals();
+    if (festivals) {
+      set({ festivals: festivals, isLoading: false });
+    } else {
+      set({ error: "Error fetching festivals", isLoading: false });
+    }
+  },
+  addFestival: async (festival: TFestival) => {
+    set({ isLoading: true, error: null });
+    try {
+      await addFestival(festival);
+      set((state) => ({
+        festivals: [...state.festivals, festival],
+        isLoading: false,
+      }));
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
+    }
+  },
+  editFestival: async (festival: TFestival) => {
+    set({ isLoading: true, error: null });
+    try {
+      await editFestival(festival);
+      set((state) => ({
+        festivals: state.festivals?.map((f) =>
+          f.id === festival.id ? { ...f, ...festival } : f
+        ),
+        isLoading: false,
+      }));
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
+    }
+  },
+  deleteFestival: async (festivalId: string) => {
+    set({ isLoading: true, error: null });
+    try {
+      await deleteFestival(festivalId);
+      set((state) => ({
+        festivals: state.festivals?.filter((f) => f.id !== festivalId),
         isLoading: false,
       }));
     } catch (err: any) {

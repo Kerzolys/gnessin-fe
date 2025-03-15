@@ -1,45 +1,62 @@
 import { useEffect, useState } from "react";
-import { TNews, TPhoto } from "../../../../services/types";
 import {
-  useNewsState,
+  useFestivalsState,
   usePhotosState,
 } from "../../../../services/zustand/store";
+import { TFestival, TPhoto } from "../../../../services/types";
 import { InputProps } from "../../../../components/input/input";
 import { Button, ButtonProps } from "../../../../components/button/button";
+import { Preloader } from "../../../../components/preloader/preloader";
 import { Form } from "../../../../components/form/form";
 import { Modal } from "../../../../components/modal/modal";
-import { Preloader } from "../../../../components/preloader/preloader";
-
-import styles from "./form-add-news.module.scss";
 import classNames from "classnames";
 
-export const FormAddNews = ({ onCancel }: { onCancel: () => void }) => {
-  const { isLoading, addNews } = useNewsState();
+import styles from "./form-add-festival.module.scss";
+
+export const FormAddFestival = ({ onCancel }: { onCancel: () => void }) => {
+  const { isLoading, addFestival } = useFestivalsState();
   const { photos, loadPhotos } = usePhotosState();
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [values, setValues] = useState<TNews>({
+  const [selectedPhotos, setSelectedPhotos] = useState<TPhoto[] | []>([]);
+  const [values, setValues] = useState<TFestival>({
     title: "",
-    shortDescription: "",
     description: "",
-    date: "",
-    photos: [],
+    composers: [],
+    performers: [],
+    lectors: [],
+    events: [],
+    image: [],
   });
-  const [selectedPhotos, setSelectedPhotos] = useState<TPhoto[]>([]);
 
   useEffect(() => {
     loadPhotos();
   }, [isOpen]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+
+    setValues((prevValues) => ({
+      ...prevValues,
+      [name]: ["composers", "performers", "lectors", "events"].includes(name)
+        ? value.split(",").map((item) => item.trim())
+        : value,
+    }));
+  };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await addFestival(values);
+    onCancel();
   };
 
   const handleOpenPhotos = () => {
     setIsOpen(true);
   };
+  const handleBack = () => setIsOpen(false);
 
   const handlePhotoSelect = (photo: TPhoto) => {
-    setValues({ ...values, photos: [...values.photos, photo] });
+    setValues({ ...values, image: [...(values.image || []), photo] });
     setSelectedPhotos((prev) => {
       const isAlreadySelected = prev.some((p) => p.id === photo.id);
       return isAlreadySelected
@@ -48,55 +65,63 @@ export const FormAddNews = ({ onCancel }: { onCancel: () => void }) => {
     });
   };
 
-  const handleBack = () => setIsOpen(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await addNews({ ...values });
-    onCancel();
-  };
-
   const inputs: InputProps[] = [
     {
       name: "title",
       type: "text",
-      placeholder: "News title",
+      placeholder: "Festival title",
       value: values.title,
-      onChange: handleChange,
-    },
-    {
-      name: "shortDescription",
-      type: "text",
-      placeholder: "Short description",
-      value: values.shortDescription,
       onChange: handleChange,
     },
     {
       name: "description",
       type: "text",
-      placeholder: "Description",
+      placeholder: "Festival description",
       value: values.description,
       onChange: handleChange,
       isTextInput: true,
+      maxLength: 300
     },
     {
-      name: "date",
+      name: "composers",
       type: "text",
-      placeholder: "Date",
-      value: values.date,
+      placeholder: "Composers (comma-separated)",
+      value: values.composers.join(", "),
+      onChange: handleChange,
+    },
+    {
+      name: "performers",
+      type: "text",
+      placeholder: "Performers (comma-separated)",
+      value: values.performers.join(", "),
+      onChange: handleChange,
+    },
+    {
+      name: "lectors",
+      type: "text",
+      placeholder: "Lectors (comma-separated)",
+      value: values.lectors.join(", "),
+      onChange: handleChange,
+    },
+    {
+      name: "events",
+      type: "text",
+      placeholder: "Events (comma-separated)",
+      value: values.events.join(", "),
       onChange: handleChange,
     },
   ];
-
   const buttons: ButtonProps[] = [
     {
-      buttonText: "Выбрать фото из загруженных",
+      buttonText: "Выбрать из загруженных фотографий",
       type: "button",
+      disabled: isLoading,
       onClick: handleOpenPhotos,
     },
     {
       buttonText: "Add",
       type: "submit",
+      disabled: isLoading,
     },
     {
       buttonText: "Cancel",
@@ -104,14 +129,16 @@ export const FormAddNews = ({ onCancel }: { onCancel: () => void }) => {
       onClick: onCancel,
     },
   ];
+
   if (isLoading) return <Preloader />;
+
   return (
     <>
       <Form
         inputs={inputs}
         buttons={buttons}
         onSubmit={handleSubmit}
-        formName="Add news"
+        formName="Add festival"
       />
       <div>
         {selectedPhotos.length > 0 && (
@@ -127,7 +154,7 @@ export const FormAddNews = ({ onCancel }: { onCancel: () => void }) => {
           </div>
         )}
       </div>
-      {isOpen && photos && photos.length > 0 && (
+      {isOpen && (
         <Modal onClose={onCancel}>
           <div className={styles.container}>
             {photos.map((photo) => (

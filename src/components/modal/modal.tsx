@@ -21,7 +21,7 @@ export const Modal: React.FC<ModalProps> = ({ children, onClose }) => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  });
+  },[]);
 
   return createPortal(
     <div className={styles.modal}>

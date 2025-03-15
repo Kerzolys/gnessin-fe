@@ -5,8 +5,13 @@ export type THeroEvent = {
 };
 
 export type TFestival = {
+  title: string;
   description: string;
-  image: string;
+  composers: string[];
+  performers: string[];
+  lectors: string[];
+  events: string[];
+  image: TPhoto[];
   id?: string;
 };
 
@@ -15,8 +20,6 @@ export type TVideo = {
   videoSrc: string;
   id?: string;
 };
-
-// export type TAbout = {};
 
 export type TNews = {
   date: string;
