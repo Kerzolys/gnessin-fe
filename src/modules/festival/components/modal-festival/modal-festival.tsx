@@ -1,5 +1,6 @@
-import { TFestival } from "../../../services/types";
 
+
+import { TFestival } from "../../../../services/types";
 import styles from "./modal-festival.module.scss";
 
 export const ModalFestival = ({ data }: { data: TFestival }) => {
@@ -11,7 +12,7 @@ export const ModalFestival = ({ data }: { data: TFestival }) => {
       <p>{data.performers.join(", ")}</p>
       <p>{data.lectors.join(", ")}</p>
       <p>
-        {data.events.map((event) => {
+        {data.events.map((event:string) => {
           return <p>{event}</p>;
         })}
       </p>
