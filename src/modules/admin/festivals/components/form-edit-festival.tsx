@@ -42,7 +42,7 @@ export const FormEditFestival = ({
     setValues((prevValues) => ({
       ...prevValues,
       [name]: ["composers", "performers", "lectors", "events"].includes(name)
-        ? value.split(",").map((item) => item.trim())
+        ? value.split(",")
         : value,
     }));
   };
