@@ -37,7 +37,7 @@ export const Festival = () => {
           </div>
         ))}
       </div>
-      {isOpen && (
+      {isOpen && selectedFestival && (
         <Modal onClose={handleClose}>
           <ModalFestival data={selectedFestival} />
         </Modal>
