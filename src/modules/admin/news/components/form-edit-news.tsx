@@ -35,7 +35,9 @@ export const FormEditNews = ({
     loadPhotos();
   }, [isOpen]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
   const handleSubmit = async (e: React.FormEvent) => {
@@ -59,6 +61,13 @@ export const FormEditNews = ({
       setValues((prevValues) => ({ ...prevValues, photos: updatedPhotos }));
       return updatedPhotos;
     });
+  };
+  const handleDeleteFromSelected = (photo: TPhoto) => {
+    setSelectedPhotos((prev) => prev.filter((p) => p.id !== photo.id));
+    setValues((prevValues) => ({
+      ...prevValues,
+      photos: prevValues.photos.filter((p) => p.id !== photo.id),
+    }));
   };
 
   const inputs = [
@@ -119,17 +128,26 @@ export const FormEditNews = ({
         onSubmit={handleSubmit}
         formName="Edit news"
       />
-      <div>
+   <div>
         {selectedPhotos.length > 0 && (
           <div className={styles.selectedPhotos}>
             {selectedPhotos.map((photo) => (
+              <div className={styles.selectedPhotos__container}>
               <img
                 key={photo.id}
                 src={photo.src}
                 alt={photo.title}
                 className={styles.selectedPhotos__photo}
+                />
+              <Button
+              buttonText="&times;"
+              onClick={() => handleDeleteFromSelected(photo)}
+              type="button"
+              extraClassname={styles.selectedPhotos__photo__button}
               />
+              </div>
             ))}
+            
           </div>
         )}
       </div>

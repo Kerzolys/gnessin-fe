@@ -22,7 +22,6 @@ export const ModalNews: React.FC<ModalNewsProps> = ({ data }) => {
                 alt={photo.title}
                 key={photo.id}
               />
-              ;
             </div>
           );
         })}

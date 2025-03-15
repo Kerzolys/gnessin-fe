@@ -48,6 +48,14 @@ export const FormAddNews = ({ onCancel }: { onCancel: () => void }) => {
     });
   };
 
+  const handleDeleteFromSelected = (photo: TPhoto) => {
+    setSelectedPhotos((prev) => prev.filter((p) => p.id !== photo.id));
+    setValues((prevValues) => ({
+      ...prevValues,
+      photos: prevValues.photos.filter((p) => p.id !== photo.id),
+    }));
+  };
+
   const handleBack = () => setIsOpen(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -113,17 +121,26 @@ export const FormAddNews = ({ onCancel }: { onCancel: () => void }) => {
         onSubmit={handleSubmit}
         formName="Add news"
       />
-      <div>
+  <div>
         {selectedPhotos.length > 0 && (
           <div className={styles.selectedPhotos}>
             {selectedPhotos.map((photo) => (
+              <div className={styles.selectedPhotos__container}>
               <img
                 key={photo.id}
                 src={photo.src}
                 alt={photo.title}
                 className={styles.selectedPhotos__photo}
+                />
+              <Button
+              buttonText="&times;"
+              onClick={() => handleDeleteFromSelected(photo)}
+              type="button"
+              extraClassname={styles.selectedPhotos__photo__button}
               />
+              </div>
             ))}
+            
           </div>
         )}
       </div>

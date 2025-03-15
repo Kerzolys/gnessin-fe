@@ -65,6 +65,14 @@ export const FormAddFestival = ({ onCancel }: { onCancel: () => void }) => {
     });
   };
 
+  const handleDeleteFromSelected = (photo: TPhoto) => {
+    setSelectedPhotos((prev) => prev.filter((p) => p.id !== photo.id));
+    setValues((prevValues) => ({
+      ...prevValues,
+      image: prevValues.image.filter((p) => p.id !== photo.id),
+    }));
+  };
+
   const inputs: InputProps[] = [
     {
       name: "title",
@@ -80,7 +88,7 @@ export const FormAddFestival = ({ onCancel }: { onCancel: () => void }) => {
       value: values.description,
       onChange: handleChange,
       isTextInput: true,
-      maxLength: 300
+      maxLength: 300,
     },
     {
       name: "composers",
@@ -144,12 +152,20 @@ export const FormAddFestival = ({ onCancel }: { onCancel: () => void }) => {
         {selectedPhotos.length > 0 && (
           <div className={styles.selectedPhotos}>
             {selectedPhotos.map((photo) => (
-              <img
-                key={photo.id}
-                src={photo.src}
-                alt={photo.title}
-                className={styles.selectedPhotos__photo}
-              />
+              <div className={styles.selectedPhotos__container}>
+                <img
+                  key={photo.id}
+                  src={photo.src}
+                  alt={photo.title}
+                  className={styles.selectedPhotos__photo}
+                />
+                <Button
+                  buttonText="&times;"
+                  onClick={() => handleDeleteFromSelected(photo)}
+                  type="button"
+                  extraClassname={styles.selectedPhotos__photo__button}
+                />
+              </div>
             ))}
           </div>
         )}

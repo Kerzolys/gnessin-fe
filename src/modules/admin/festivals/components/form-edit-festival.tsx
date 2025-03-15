@@ -34,7 +34,7 @@ export const FormEditFestival = ({
   useEffect(() => {
     loadPhotos();
   }, [isOpen]);
-  
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -66,6 +66,14 @@ export const FormEditFestival = ({
       setValues((prevValues) => ({ ...prevValues, image: updatedPhotos }));
       return updatedPhotos;
     });
+  };
+
+  const handleDeleteFromSelected = (photo: TPhoto) => {
+    setSelectedPhotos((prev) => prev.filter((p) => p.id !== photo.id));
+    setValues((prevValues) => ({
+      ...prevValues,
+      image: prevValues.image.filter((p) => p.id !== photo.id),
+    }));
   };
 
   const inputs: InputProps[] = [
@@ -144,13 +152,22 @@ export const FormEditFestival = ({
         {selectedPhotos.length > 0 && (
           <div className={styles.selectedPhotos}>
             {selectedPhotos.map((photo) => (
+              <div className={styles.selectedPhotos__container}>
               <img
                 key={photo.id}
                 src={photo.src}
                 alt={photo.title}
                 className={styles.selectedPhotos__photo}
+                />
+              <Button
+              buttonText="&times;"
+              onClick={() => handleDeleteFromSelected(photo)}
+              type="button"
+              extraClassname={styles.selectedPhotos__photo__button}
               />
+              </div>
             ))}
+            
           </div>
         )}
       </div>
