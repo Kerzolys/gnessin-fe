@@ -14,7 +14,7 @@ import { FormEditNews } from "./components/form-edit-news";
 
 export const News = () => {
   const { news, loadNews, isLoading } = useNewsState();
-  const {loadPhotos} = usePhotosState();
+  const { loadPhotos } = usePhotosState();
   const navigate = useNavigate();
   const handleBack = () => navigate(-1);
   const [isOpen, setIsOpen] = useState<boolean>(false);

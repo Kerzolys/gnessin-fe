@@ -4,14 +4,19 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  orderBy,
+  query,
+  serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
 import { TNews } from "../../../../services/types";
 import { db } from "../../../../services/firebase/firebase";
 
-
 export const fetchNews = async (): Promise<TNews[] | null> => {
-  const newsCollection = collection(db, "news");
+  const newsCollection = query(
+    collection(db, "news"),
+    orderBy("createdAt", "desc")
+  );
   const newsSnapshot = await getDocs(newsCollection);
   const newsList = await newsSnapshot.docs.map((doc) => ({
     date: doc.data().date,
@@ -32,6 +37,7 @@ export const addNews = async (news: TNews): Promise<string | null> => {
     description: news.description,
     title: news.title,
     photos: news.photos,
+    createdAt: serverTimestamp(),
   };
   const docRef = await addDoc(collection(db, "news"), newsData);
   return docRef.id;

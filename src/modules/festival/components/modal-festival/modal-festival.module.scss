@@ -1,0 +1,22 @@
+.container {
+  &__image {
+    inline-size: 200px;
+    padding: 15px;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+    &:hover {
+      transform: scale(1.1);
+    }
+    &_modal {
+        inline-size: auto;
+        max-inline-size: 100%;
+        max-block-size: 80vh;
+        object-fit: contain; 
+    }
+  }
+  &_modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

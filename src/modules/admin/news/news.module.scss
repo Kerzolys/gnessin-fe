@@ -15,7 +15,11 @@
       flex-direction: column;
       gap: 20px;
       border: 1px solid #dddee1;
+      border-radius: 20px;
       padding: 20px;
+      &:hover {
+        background-color: #f2f2f2;
+      }
     }
   }
 }

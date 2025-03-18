@@ -28,6 +28,7 @@ export type TNews = {
   id?: string;
   title: string;
   photos: TPhoto[];
+  createdAt?: string;
 };
 
 export type TPhoto = {

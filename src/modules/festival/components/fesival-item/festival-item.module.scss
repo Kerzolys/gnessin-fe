@@ -8,6 +8,13 @@
     cursor: pointer;
     max-inline-size: 500px;
     padding: 20px;
+    opacity: 0;
+    transform: translateX(-100px);
+    transition: all 3s ease;
+    &_visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
     &:hover {
       background-color: #f2f2f2;
     }
