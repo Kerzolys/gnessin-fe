@@ -12,8 +12,19 @@ import { Festivals } from "./modules/admin/festivals/festivals";
 import { About } from "./pages/about/About";
 import { AdminContacts } from "./modules/admin/admin-contacts/admin-contacts";
 import { ContactsPage } from "./pages/contacts/Contacts";
+import ProtectedRoute from "./modules/protected-route/protected-route";
+import { useAuth } from "./services/zustand/store";
+import { useEffect } from "react";
 
 function App() {
+  const { user, setUser } = useAuth();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) setUser(JSON.parse(atob(token)));
+  }, []);
+
+  console.log(user)
   return (
     <>
       <Routes>
@@ -21,13 +32,15 @@ function App() {
         <Route path="/about" element={<About />}></Route>
         <Route path="/contacts" element={<ContactsPage />}></Route>
         <Route path="/admin" element={<Admin />}></Route>
-        <Route path="/admin/hero" element={<MainEvent />}></Route>
-        <Route path="/admin/videos" element={<Videos />}></Route>
-        <Route path="/admin/festivals" element={<Festivals />}></Route>
-        <Route path="/admin/news" element={<News />}></Route>
-        <Route path="/admin/photos" element={<Photos />}></Route>
-        <Route path="/admin/social" element={<Social />}></Route>
-        <Route path="/admin/contacts" element={<AdminContacts />}></Route>
+        <Route element={<ProtectedRoute />}>
+          <Route path="/admin/hero" element={<MainEvent />}></Route>
+          <Route path="/admin/videos" element={<Videos />}></Route>
+          <Route path="/admin/festivals" element={<Festivals />}></Route>
+          <Route path="/admin/news" element={<News />}></Route>
+          <Route path="/admin/photos" element={<Photos />}></Route>
+          <Route path="/admin/social" element={<Social />}></Route>
+          <Route path="/admin/contacts" element={<AdminContacts />}></Route>
+        </Route>
         {/* <Route path="/admin/event" element={<Event />}></Route> */}
       </Routes>
     </>
