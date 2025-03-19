@@ -28,7 +28,7 @@ function App() {
         <Route path="/admin/photos" element={<Photos />}></Route>
         <Route path="/admin/social" element={<Social />}></Route>
         <Route path="/admin/contacts" element={<AdminContacts />}></Route>
-        <Route path="/admin/event" element={<Event />}></Route>
+        {/* <Route path="/admin/event" element={<Event />}></Route> */}
       </Routes>
     </>
   );
