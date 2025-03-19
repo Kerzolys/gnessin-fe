@@ -10,6 +10,8 @@ import { Photos } from "./modules/admin/photos/photos";
 import { News } from "./modules/admin/news/news";
 import { Festivals } from "./modules/admin/festivals/festivals";
 import { About } from "./pages/about/About";
+import { AdminContacts } from "./modules/admin/admin-contacts/admin-contacts";
+import { ContactsPage } from "./pages/contacts/Contacts";
 
 function App() {
   return (
@@ -17,6 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/about" element={<About />}></Route>
+        <Route path="/contacts" element={<ContactsPage />}></Route>
         <Route path="/admin" element={<Admin />}></Route>
         <Route path="/admin/hero" element={<MainEvent />}></Route>
         <Route path="/admin/videos" element={<Videos />}></Route>
@@ -24,6 +27,8 @@ function App() {
         <Route path="/admin/news" element={<News />}></Route>
         <Route path="/admin/photos" element={<Photos />}></Route>
         <Route path="/admin/social" element={<Social />}></Route>
+        <Route path="/admin/contacts" element={<AdminContacts />}></Route>
+        <Route path="/admin/event" element={<Event />}></Route>
       </Routes>
     </>
   );

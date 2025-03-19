@@ -76,6 +76,16 @@ export const Admin = () => {
         />
         <NavLink
           extraClassname={styles.container__nav__link}
+          to="./event"
+          title="Event"
+        />
+        <NavLink
+          extraClassname={styles.container__nav__link}
+          to="./contacts"
+          title="Contacts"
+        />
+        <NavLink
+          extraClassname={styles.container__nav__link}
           to="/"
           title="Home"
         />

@@ -38,15 +38,21 @@
             &:nth-child(7) {
                 animation-delay: 1.8s;
             }
+            &:nth-child(8) {
+                animation-delay: 2.1s;
+            }
+            &:nth-child(9) {
+                animation-delay: 2.4s;
+            }
         }
         &__button {
             opacity: 0;
             animation: appearing 2.3s forwards;
             &:nth-child(2) {
-                animation-delay: 1.8s;
+                animation-delay: 2.5s;
             }
             &:nth-child(3) {
-                animation-delay: 2.1s;
+                animation-delay: 2.8s;
             }
         }
     }

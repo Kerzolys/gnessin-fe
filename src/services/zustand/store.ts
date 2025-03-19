@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import {
+  TContact,
   TFestival,
   THeroEvent,
   TNews,
@@ -41,6 +42,12 @@ import {
   editFestival,
   fetchFestivals,
 } from "../../modules/admin/festivals/api/apiFestival";
+import {
+  addContact,
+  deleteContact,
+  editContact,
+  fetchContacts,
+} from "../../modules/admin/admin-contacts/api/apiContacts";
 
 type AuthState = {
   user: TUser | null;
@@ -469,6 +476,69 @@ export const useFestivalsState = create<FestivalsState>((set) => ({
       await deleteFestival(festivalId);
       set((state) => ({
         festivals: state.festivals?.filter((f) => f.id !== festivalId),
+        isLoading: false,
+      }));
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
+    }
+  },
+}));
+
+type ContactsState = {
+  contacts: TContact[] | [];
+  isLoading: boolean;
+  error: string | null;
+  loadContacts: () => void;
+  addContact: (contact: TContact) => void;
+  deleteContact: (contactId: string) => void;
+  editContact: (contact: TContact) => void;
+};
+
+export const useContactsState = create<ContactsState>((set) => ({
+  contacts: [],
+  isLoading: false,
+  error: null,
+  loadContacts: async () => {
+    set({ isLoading: true, error: null });
+    const contacts = await fetchContacts();
+    if (contacts) {
+      set({ contacts: contacts, isLoading: false });
+    } else {
+      set({ error: "Error fetching contacts", isLoading: false });
+    }
+  },
+  addContact: async (contact: TContact) => {
+    set({ isLoading: true, error: null });
+    try {
+      await addContact(contact);
+      set((state) => ({
+        contacts: [...state.contacts, contact],
+        isLoading: false,
+      }));
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
+    }
+  },
+  deleteContact: async (contactId: string) => {
+    set({ isLoading: true, error: null });
+    try {
+      await deleteContact(contactId);
+      set((state) => ({
+        contacts: state.contacts?.filter((c) => c.id !== contactId),
+        isLoading: false,
+      }));
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
+    }
+  },
+  editContact: async (contact: TContact) => {
+    set({ isLoading: true, error: null });
+    try {
+      await editContact(contact);
+      set((state) => ({
+        contacts: state.contacts?.map((c) =>
+          c.id === contact.id ? { ...c, ...contact } : c
+        ),
         isLoading: false,
       }));
     } catch (err: any) {

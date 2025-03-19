@@ -52,3 +52,10 @@ export type TUser = {
   refreshToken: string;
   token: string;
 };
+
+export type TContact = {
+  person: string;
+  email: string;
+  messenger: string;
+  id?: string;
+};

@@ -56,7 +56,7 @@ export const Header = () => {
           <NavLink to="/" title="Главная" />
           <NavLink to="/about" title="История" />
           <NavLink to="/about" title="События" />
-          <NavLink to="/about" title="Контакты" />
+          <NavLink to="/contacts" title="Контакты" />
         </div>
       </div>
     );
@@ -71,7 +71,7 @@ export const Header = () => {
       <img src="/assets/logo.png" alt="logo" />
       <div className={styles.container__nav}>
         <NavLink to="/about" title="События" />
-        <NavLink to="/about" title="Контакты" />
+        <NavLink to="/contacts" title="Контакты" />
       </div>
     </div>
   );
