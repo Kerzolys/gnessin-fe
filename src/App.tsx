@@ -26,7 +26,6 @@ function App() {
     console.log("После restoreSession", useAuth.getState());
   }, []);
 
-  if (!isSessionRestored) return <Preloader />;
 
   return (
     <>
@@ -35,7 +34,9 @@ function App() {
         <Route path="/about" element={<About />}></Route>
         <Route path="/contacts" element={<ContactsPage />}></Route>
         <Route path="/admin" element={<Admin />}></Route>
-        <Route element={<ProtectedRoute />}>
+        <Route element={
+            isSessionRestored ? <ProtectedRoute /> : <Preloader />
+          }>
           <Route path="/admin/hero" element={<MainEvent />}></Route>
           <Route path="/admin/videos" element={<Videos />}></Route>
           <Route path="/admin/festivals" element={<Festivals />}></Route>
