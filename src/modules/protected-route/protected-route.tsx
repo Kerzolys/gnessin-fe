@@ -3,10 +3,11 @@ import { useAuth } from "../../services/zustand/store";
 import { Preloader } from "../../components/preloader/preloader";
 
 const ProtectedRoute = () => {
-  const { user, isLoading } = useAuth();
+  const { user, isSessionRestored } = useAuth();
 
-  if (isLoading) return <Preloader />;
-  return user ? <Outlet /> : <Navigate to="/admin" replace />;
+  if (!isSessionRestored) return <Preloader />;
+  if (!user) return <Navigate to="/admin" replace />;
+  return <Outlet />;
 };
 
 export default ProtectedRoute;

@@ -103,12 +103,12 @@ export const useAuth = create<AuthState>((set) => ({
   setUser: (user) => set({ user, isAuthenticated: !!user }),
   setError: (error) => set({ error }),
   restoreSession: async () => {
-    set({ isLoading: true });
+    set({ isLoading: true, isSessionRestored: false });
 
     const refreshToken = localStorage.getItem("refreshToken");
 
     if (!refreshToken) {
-      set({ user: null, isAuthenticated: false, isLoading: false });
+      set({ user: null, isAuthenticated: false, isLoading: false, isSessionRestored: true });
       return;
     }
 
