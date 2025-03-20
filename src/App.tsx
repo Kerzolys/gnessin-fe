@@ -16,27 +16,25 @@ import ProtectedRoute from "./modules/protected-route/protected-route";
 import { useAuth } from "./services/zustand/store";
 import { useEffect } from "react";
 import { Preloader } from "./components/preloader/preloader";
+import { AdminEvent } from "./modules/admin/admin-event/admin-event";
+import { EventPage } from "./pages/event/Event";
 
 function App() {
   const { restoreSession, isSessionRestored } = useAuth();
 
   useEffect(() => {
-    console.log("До restoreSession", useAuth.getState());
     restoreSession();
-    console.log("После restoreSession", useAuth.getState());
   }, []);
-
 
   return (
     <>
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/about" element={<About />}></Route>
+        <Route path="/event" element={<EventPage />}></Route>
         <Route path="/contacts" element={<ContactsPage />}></Route>
         <Route path="/admin" element={<Admin />}></Route>
-        <Route element={
-            isSessionRestored ? <ProtectedRoute /> : <Preloader />
-          }>
+        <Route element={isSessionRestored ? <ProtectedRoute /> : <Preloader />}>
           <Route path="/admin/hero" element={<MainEvent />}></Route>
           <Route path="/admin/videos" element={<Videos />}></Route>
           <Route path="/admin/festivals" element={<Festivals />}></Route>
@@ -44,8 +42,8 @@ function App() {
           <Route path="/admin/photos" element={<Photos />}></Route>
           <Route path="/admin/social" element={<Social />}></Route>
           <Route path="/admin/contacts" element={<AdminContacts />}></Route>
+          <Route path="/admin/event" element={<AdminEvent />}></Route>
         </Route>
-        {/* <Route path="/admin/event" element={<Event />}></Route> */}
       </Routes>
     </>
   );

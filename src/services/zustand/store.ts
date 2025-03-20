@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import {
   TContact,
+  TEvent,
   TFestival,
   THeroEvent,
   TNews,
@@ -48,6 +49,7 @@ import {
   editContact,
   fetchContacts,
 } from "../../modules/admin/admin-contacts/api/apiContacts";
+import { addEvent, deleteEvent, editEvent, fetchEvent } from "../../modules/admin/admin-event/api/apiEvent";
 
 type AuthState = {
   user: TUser | null;
@@ -574,3 +576,65 @@ export const useContactsState = create<ContactsState>((set) => ({
     }
   },
 }));
+
+type EventState = {
+  event: TEvent | null;
+  isLoading: boolean;
+  error: string | null;
+  loadEvent: () => void;
+  addEvent: (event: TEvent) => void;
+  editEvent: (event: TEvent) => void;
+  deleteEvent: (eventId: string) => void;
+}
+
+export const useEventState = create<EventState>((set) => ({
+  event: null,
+  isLoading: false,
+  error: null,
+  loadEvent: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const event = await fetchEvent();
+      if (event) {
+        set({ event: event, isLoading: false });
+      } else {
+        set({ error: "Error fetching event", isLoading: false });
+      }
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
+    }
+  },
+  addEvent: async (event: TEvent) => {
+    set({ isLoading: true, error: null });
+    try {
+      await addEvent(event);
+      set({ event: event, isLoading: false });
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
+    }
+  },
+  editEvent: async (event: TEvent) => {
+    set({ isLoading: true, error: null });
+    try {
+      await editEvent(event);
+      set((state) => ({
+        event: {
+         ...state.event,
+         ...event,
+        },
+        isLoading: false,
+      }));
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
+    }
+  },
+  deleteEvent: async (eventId: string) => {
+    set({ isLoading: true, error: null });
+    try {
+      await deleteEvent(eventId);
+      set({ event: null, isLoading: false });
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
+    }
+  }
+}))

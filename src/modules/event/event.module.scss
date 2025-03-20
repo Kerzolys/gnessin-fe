@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  padding-inline: 150px;
+  text-align: start;
+  @media screen and (max-width: 1140px) {
+    padding-inline: 80px;
+  }
+  @media screen and (max-width: 767px) {
+    padding-inline: 20px;
+  }
+}

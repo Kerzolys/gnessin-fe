@@ -59,3 +59,11 @@ export type TContact = {
   messenger: string;
   id?: string;
 };
+
+export type TEvent = {
+  title: string;
+  description: string;
+  date?: string;
+  conditions?: string;
+  id?: string;
+};
