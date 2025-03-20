@@ -15,16 +15,19 @@ import { ContactsPage } from "./pages/contacts/Contacts";
 import ProtectedRoute from "./modules/protected-route/protected-route";
 import { useAuth } from "./services/zustand/store";
 import { useEffect } from "react";
+import { Preloader } from "./components/preloader/preloader";
 
 function App() {
-  const { user, setUser } = useAuth();
+  const { restoreSession, isSessionRestored } = useAuth();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) setUser(JSON.parse(atob(token)));
+    console.log("До restoreSession", useAuth.getState());
+    restoreSession();
+    console.log("После restoreSession", useAuth.getState());
   }, []);
 
-  console.log(user)
+  if (!isSessionRestored) return <Preloader />;
+
   return (
     <>
       <Routes>

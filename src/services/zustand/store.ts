@@ -54,6 +54,7 @@ type AuthState = {
   isLoading: boolean;
   error: string | null;
   isAuthenticated: boolean;
+  isSessionRestored: boolean;
   login: (username: string, password: string) => void;
   logout: () => void;
   setUser: (uset: TUser) => void;
@@ -66,6 +67,7 @@ export const useAuth = create<AuthState>((set) => ({
   isLoading: false,
   error: null,
   isAuthenticated: false,
+  isSessionRestored: false,
   login: async (email, password) => {
     set({ isLoading: true, error: null });
     try {
@@ -100,13 +102,28 @@ export const useAuth = create<AuthState>((set) => ({
   },
   setUser: (user) => set({ user, isAuthenticated: !!user }),
   setError: (error) => set({ error }),
-  restoreSession: () => {
+  restoreSession: async () => {
     set({ isLoading: true });
 
     const refreshToken = localStorage.getItem("refreshToken");
 
+    if (!refreshToken) {
+      set({ user: null, isAuthenticated: false, isLoading: false });
+      return;
+    }
+
     auth.onAuthStateChanged(async (user) => {
-      if (user && refreshToken) {
+      if (!user) {
+        set({
+          user: null,
+          isAuthenticated: false,
+          isLoading: false,
+          isSessionRestored: true, // Флаг установлен
+        });
+        return;
+      }
+
+      try {
         const token = await user.getIdToken();
         const userData: TUser = {
           id: user.uid,
@@ -116,9 +133,20 @@ export const useAuth = create<AuthState>((set) => ({
           refreshToken: user.refreshToken,
           token,
         };
-        set({ user: userData, isAuthenticated: true, isLoading: false });
-      } else {
-        set({ user: null, isAuthenticated: false, isLoading: false });
+        set({
+          user: userData,
+          isAuthenticated: true,
+          isLoading: false,
+          isSessionRestored: true, // Флаг установлен
+        });
+      } catch (err: any) {
+        console.log("Ошибка при получении токена", err.message);
+        set({
+          user: null,
+          isAuthenticated: false,
+          isLoading: false,
+          isSessionRestored: true, // Флаг установлен
+        });
       }
     });
   },
