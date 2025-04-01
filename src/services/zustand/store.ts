@@ -36,7 +36,6 @@ import {
   archiveNews,
   deleteNews,
   editNews,
-  fetchArchivedNews,
   fetchNews,
 } from "../../modules/admin/news/api/apiNews";
 import {

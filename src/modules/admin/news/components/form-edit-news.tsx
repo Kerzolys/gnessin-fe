@@ -27,6 +27,7 @@ export const FormEditNews = ({
     description: data.description,
     date: data.date,
     photos: data.photos,
+    archived: data.archived
   });
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedPhotos, setSelectedPhotos] = useState<TPhoto[]>(data.photos);
