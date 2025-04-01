@@ -23,6 +23,7 @@ export const FormAddNews = ({ onCancel }: { onCancel: () => void }) => {
     description: "",
     date: "",
     photos: [],
+    archived: false,
   });
   const [selectedPhotos, setSelectedPhotos] = useState<TPhoto[]>([]);
 

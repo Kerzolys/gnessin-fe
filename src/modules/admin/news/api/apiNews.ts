@@ -25,6 +25,8 @@ export const fetchNews = async (): Promise<TNews[] | null> => {
     id: doc.id,
     title: doc.data().title,
     photos: doc.data().photos,
+    createdAt: doc.data().createdAt,
+    archived: doc.data().archived,
   }));
 
   return newsList;
@@ -63,5 +65,16 @@ export const deleteNews = async (newsId: string): Promise<void> => {
   } catch (error) {
     console.error(error);
     throw new Error("Error deleting news");
+  }
+};
+
+
+export const archiveNews = async (newsId: string): Promise<void> => {
+  try {
+    const docRef = doc(db, "news", newsId);
+    await updateDoc(docRef, { archived: true });
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error archiving news");
   }
 };

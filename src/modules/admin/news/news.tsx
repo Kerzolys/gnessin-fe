@@ -13,7 +13,7 @@ import { FormDeleteNews } from "./components/form-delete-news";
 import { FormEditNews } from "./components/form-edit-news";
 
 export const News = () => {
-  const { news, loadNews, isLoading } = useNewsState();
+  const { news, loadNews, isLoading, archiveNews } = useNewsState();
   const { loadPhotos } = usePhotosState();
   const navigate = useNavigate();
   const handleBack = () => navigate(-1);
@@ -44,6 +44,14 @@ export const News = () => {
     setIsOpen(true);
   };
 
+  const handleArchiveNews = async (news: TNews) => {
+    if (!news.id) {
+      throw new Error("News ID is required");
+    }
+
+    await archiveNews(news.id);
+  };
+
   const handleClose = () => setIsOpen(false);
 
   if (isLoading) return <Preloader />;
@@ -53,6 +61,9 @@ export const News = () => {
         {news.map((news) => {
           return (
             <div className={styles.container__newsList__news}>
+              {news.archived === true ? (
+                <span style={{ color: "red" }}>Archived</span>
+              ) : null}
               <ModalNews data={news} />
               <Button
                 buttonText="Edit"
@@ -64,6 +75,13 @@ export const News = () => {
                 type="button"
                 onClick={() => handleOpenDelete(news)}
               />
+              {news.archived == true ? null : (
+                <Button
+                  buttonText="Archive"
+                  type="button"
+                  onClick={() => handleArchiveNews(news)}
+                />
+              )}
             </div>
           );
         })}

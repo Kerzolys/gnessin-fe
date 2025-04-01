@@ -1,12 +1,16 @@
+import { useLocation } from "react-router-dom";
+import { Button } from "../../../../components/button/button";
 import { TNews } from "../../../../services/types";
 
 import styles from "./modal-news.module.scss";
 
 type ModalNewsProps = {
   data: TNews;
+  onClick?: () => void;
 };
 
-export const ModalNews: React.FC<ModalNewsProps> = ({ data }) => {
+export const ModalNews: React.FC<ModalNewsProps> = ({ data, onClick }) => {
+const location = useLocation()
   return (
     <div className={styles.container}>
       <span>{data.date}</span>
@@ -25,6 +29,9 @@ export const ModalNews: React.FC<ModalNewsProps> = ({ data }) => {
             </div>
           );
         })}
+      {data.archived == true && location.pathname !== '/admin/news' ? (
+        <Button buttonText="Назад" type="button" onClick={onClick} />
+      ) : null}
     </div>
   );
 };

@@ -33,8 +33,10 @@ import {
 } from "../../modules/admin/photos/api/apiPhotos";
 import {
   addNews,
+  archiveNews,
   deleteNews,
   editNews,
+  fetchArchivedNews,
   fetchNews,
 } from "../../modules/admin/news/api/apiNews";
 import {
@@ -49,7 +51,12 @@ import {
   editContact,
   fetchContacts,
 } from "../../modules/admin/admin-contacts/api/apiContacts";
-import { addEvent, deleteEvent, editEvent, fetchEvent } from "../../modules/admin/admin-event/api/apiEvent";
+import {
+  addEvent,
+  deleteEvent,
+  editEvent,
+  fetchEvent,
+} from "../../modules/admin/admin-event/api/apiEvent";
 
 type AuthState = {
   user: TUser | null;
@@ -110,7 +117,12 @@ export const useAuth = create<AuthState>((set) => ({
     const refreshToken = localStorage.getItem("refreshToken");
 
     if (!refreshToken) {
-      set({ user: null, isAuthenticated: false, isLoading: false, isSessionRestored: true });
+      set({
+        user: null,
+        isAuthenticated: false,
+        isLoading: false,
+        isSessionRestored: true,
+      });
       return;
     }
 
@@ -393,6 +405,7 @@ type NewsState = {
   addNews: (news: TNews) => void;
   deleteNews: (newsId: string) => void;
   editNews: (news: TNews) => void;
+  archiveNews: (newsId: string) => void;
 };
 
 export const useNewsState = create<NewsState>((set) => ({
@@ -443,6 +456,20 @@ export const useNewsState = create<NewsState>((set) => ({
       await deleteNews(newsId);
       set((state) => ({
         news: state.news?.filter((n) => n.id !== newsId),
+        isLoading: false,
+      }));
+    } catch (err: any) {
+      set({ error: err.message, isLoading: false });
+    }
+  },
+  archiveNews: async (newsId: string) => {
+    set({ isLoading: true, error: null });
+    try {
+      await archiveNews(newsId);
+      set((state) => ({
+        news: state.news?.map((n) =>
+          n.id === newsId ? { ...n, archived: true } : n
+        ),
         isLoading: false,
       }));
     } catch (err: any) {
@@ -585,7 +612,7 @@ type EventState = {
   addEvent: (event: TEvent) => void;
   editEvent: (event: TEvent) => void;
   deleteEvent: (eventId: string) => void;
-}
+};
 
 export const useEventState = create<EventState>((set) => ({
   event: null,
@@ -619,8 +646,8 @@ export const useEventState = create<EventState>((set) => ({
       await editEvent(event);
       set((state) => ({
         event: {
-         ...state.event,
-         ...event,
+          ...state.event,
+          ...event,
         },
         isLoading: false,
       }));
@@ -636,5 +663,5 @@ export const useEventState = create<EventState>((set) => ({
     } catch (err: any) {
       set({ error: err.message, isLoading: false });
     }
-  }
-}))
+  },
+}));
